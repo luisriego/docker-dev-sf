@@ -1,13 +1,45 @@
-# docker-dev-env-for-symfony
-(Cloned from @juanwilde github)
+# docker-dev-sf
+(Based from @juanwilde github)
 
 This repository contains the basic configuration for a complete local environment for Symfony projects
 
 ### Content:
 - NGINX 1.19 container to handle HTTP requests
-- PHP 8.1.1 container to host your Symfony application
+- PHP 8.2 container to host your Symfony application
 - MySQL 8.0 container to store databases
 - Postgres 14 container to store databases
+
+- With the PHP extensions installed
+     gnupg \
+     g++ \
+     procps \
+     openssl \
+     git \
+     acl \
+     openssl \
+     openssh-client \
+     wget \
+     zip \
+     vim \
+     unzip \
+     zlib1g-dev \
+     libzip-dev \
+     libfreetype6-dev \
+     libpng-dev \
+     libjpeg-dev \
+     libicu-dev  \
+     libonig-dev \
+     libxslt1-dev \
+     acl \
+     pdo_mysql \
+     pdo_pgsql \
+     amqp \
+     redis \ I'm not sure!
+     xdebug \
+     apcu \
+     && docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug amqp apcu
+
+ RUN docker-php-ext-configure gd --with-jpeg --with-freetype
 
 (feel free to update any version in `Dockerfiles` and ports in `docker-compose.yml`)
 
