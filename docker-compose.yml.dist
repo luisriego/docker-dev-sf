@@ -1,8 +1,8 @@
 version: '3.5'
 
 services:
-  docker-dev-env-for-symfony-web:
-    container_name: docker-dev-env-for-symfony-web
+  docker-dev-sf-web:
+    container_name: docker-dev-sf-web
     build:
       context: ./docker/nginx
       args:
@@ -12,12 +12,12 @@ services:
     volumes:
       - ./public:/appdata/www/public
     depends_on:
-      - docker-dev-env-for-symfony-be
+      - docker-dev-sf-be
     networks:
-      - docker-dev-env-for-symfony-network
+      - docker-dev-sf-network
 
-  docker-dev-env-for-symfony-be:
-    container_name: docker-dev-env-for-symfony-be
+  docker-dev-sf-be:
+    container_name: docker-dev-sf-be
     build:
       context: docker/php
       args:
@@ -31,16 +31,16 @@ services:
     environment:
       XDEBUG_CLIENT_HOST: 172.17.0.1
       XDEBUG_CLIENT_PORT: 9003
-      PHP_IDE_CONFIG: serverName=docker-dev-env-for-symfony
+      PHP_IDE_CONFIG: serverName=docker-dev-sf
     ports:
       - '1100:8000'
     networks:
-      - docker-dev-env-for-symfony-network
+      - docker-dev-sf-network
     depends_on:
-      - docker-dev-env-for-symfony-postgres
+      - docker-dev-sf-postgres
       
-  docker-dev-env-for-symfony-postgres:
-    container_name: docker-dev-env-for-symfony-postgres
+  docker-dev-sf-postgres:
+    container_name: docker-dev-sf-postgres
     image: postgres:14-alpine
     ports:
       - '5432:5432'
@@ -49,12 +49,12 @@ services:
       POSTGRES_PASSWORD: passwd
       POSTGRES_DB: postgres_symfony
     volumes:
-      - docker-dev-env-for-symfony-pgsql-data:/var/lib/postgresql/data
+      - docker-dev-sf-pgsql-data:/var/lib/postgresql/data
     networks:
-      - docker-dev-env-for-symfony-network
+      - docker-dev-sf-network
 
-  docker-dev-env-for-symfony-mysql:
-    container_name: docker-dev-env-for-symfony-mysql
+  docker-dev-sf-mysql:
+    container_name: docker-dev-sf-mysql
     image: mysql:8.0.26
     ports:
       - '3336:3306'
@@ -62,24 +62,32 @@ services:
       MYSQL_DATABASE: mysql_symfony
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - docker-dev-env-for-symfony-mysql-data:/var/lib/mysql
+      - docker-dev-sf-mysql-data:/var/lib/mysql
     networks:
-      - docker-dev-env-for-symfony-network
+      - docker-dev-sf-network
     command: [ 'mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci' ]
 
-  docker-dev-env-for-symfony-rabbit:
-    container_name: docker-dev-env-for-symfony-rabbitmq
+  docker-dev-sf-rabbit:
+    container_name: docker-dev-sf-rabbitmq
     image: rabbitmq:3-management-alpine
     ports:
       - '5672:5672'
       - '15672:15672'
     networks:
-      - docker-dev-env-for-symfony-network
+      - docker-dev-sf-network
+
+  docker-dev-sf-redis:
+    container_name: docker-dev-sf-redis
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - docker-dev-sf-network
 
 volumes:
-  docker-dev-env-for-symfony-pgsql-data:
-  docker-dev-env-for-symfony-mysql-data:
+  docker-dev-sf-pgsql-data:
+  docker-dev-sf-mysql-data:
 
 networks:
-  docker-dev-env-for-symfony-network:
+  docker-dev-sf-network:
 #    external: true
