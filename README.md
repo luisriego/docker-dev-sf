@@ -128,4 +128,35 @@ $subQueryBuilder = $this->getEntityManager()->createQueryBuilder();
         ->getQuery();
 ```
 
+```
+namespace App\Tests;
 
+use App\Controller\HelloController;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class HelloControllerTest extends TestCase
+{
+    public function testHello(): void
+    {
+        // Crea una instancia del controlador que quieres probar
+        $controller = new HelloController();
+
+        // Crea una solicitud simulada con los parámetros que necesites
+        $request = new Request(['name' => 'Bing']);
+
+        // Llama al método del controlador y obtén la respuesta
+        $response = $controller->hello($request);
+
+        // Asegúrate de que la respuesta es una instancia de Response
+        $this->assertInstanceOf(Response::class, $response);
+
+        // Asegúrate de que el código de estado es 200 (OK)
+        $this->assertEquals(200, $response->getStatusCode());
+
+        // Asegúrate de que el contenido de la respuesta es el esperado
+        $this->assertEquals('Hello Bing!', $response->getContent());
+    }
+}
+```
