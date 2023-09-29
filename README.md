@@ -128,6 +128,7 @@ $subQueryBuilder = $this->getEntityManager()->createQueryBuilder();
         ->getQuery();
 ```
 
+## Model for a unit test
 ```
 namespace App\Tests;
 
